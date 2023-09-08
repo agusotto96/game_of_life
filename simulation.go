@@ -1,8 +1,6 @@
 package main
 
-import (
-	"math/rand"
-)
+import "math/rand"
 
 type World struct {
 	Cells  []bool

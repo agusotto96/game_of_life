@@ -7,6 +7,7 @@ import (
 type Game struct {
 	Width  int
 	Height int
+	Title  string
 	World  World
 	Pixels []byte
 }
@@ -15,6 +16,7 @@ func NewGame(world World) Game {
 	return Game{
 		Width:  world.Width,
 		Height: world.Height,
+		Title:  "Game of Life",
 		World:  world,
 		Pixels: make([]byte, world.Width*world.Height*4),
 	}
@@ -47,5 +49,7 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 }
 
 func (g *Game) Run() error {
+	ebiten.SetWindowSize(g.Width, g.Height)
+	ebiten.SetWindowTitle(g.Title)
 	return ebiten.RunGame(g)
 }
