@@ -4,21 +4,20 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
+const rgba = 4
+
+var aliveColor = [rgba]byte{0x39, 0xff, 0x14, 0xff}
+var deadColor = [rgba]byte{0x20, 0x20, 0x20, 0xff}
+
 type Game struct {
-	Width  int
-	Height int
-	Title  string
 	World  World
 	Pixels []byte
 }
 
 func NewGame(world World) Game {
 	return Game{
-		Width:  world.Width,
-		Height: world.Height,
-		Title:  "Game of Life",
 		World:  world,
-		Pixels: make([]byte, world.Width*world.Height*4),
+		Pixels: make([]byte, world.Width*world.Height*rgba),
 	}
 }
 
@@ -28,28 +27,23 @@ func (g *Game) Update() error {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	for i, v := range g.World.Cells {
-		if v {
-			g.Pixels[4*i] = 0xff
-			g.Pixels[4*i+1] = 0xff
-			g.Pixels[4*i+2] = 0xff
-			g.Pixels[4*i+3] = 0xff
-		} else {
-			g.Pixels[4*i] = 0
-			g.Pixels[4*i+1] = 0
-			g.Pixels[4*i+2] = 0
-			g.Pixels[4*i+3] = 0
+	for i, alive := range g.World.Cells {
+		color := deadColor
+		if alive {
+			color = aliveColor
+		}
+		for channel, value := range color {
+			g.Pixels[rgba*i+channel] = value
 		}
 	}
 	screen.WritePixels(g.Pixels)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
-	return g.Width, g.Height
+	return g.World.Width, g.World.Height
 }
 
 func (g *Game) Run() error {
-	ebiten.SetWindowSize(g.Width, g.Height)
-	ebiten.SetWindowTitle(g.Title)
+	ebiten.SetWindowTitle("Game of Life")
 	return ebiten.RunGame(g)
 }
