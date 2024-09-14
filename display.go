@@ -33,7 +33,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			color = aliveColor
 		}
 		for channel, value := range color {
-			g.Pixels[rgba*i+channel] = value
+			g.Pixels[i*rgba+channel] = value
 		}
 	}
 	screen.WritePixels(g.Pixels)
