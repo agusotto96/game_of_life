@@ -5,10 +5,12 @@ import (
 )
 
 func main() {
-	width := 640
-	height := 480
-	chance := 15
-	world := RandomWorld(width, height, chance)
+	config := ReadConfig()
+	world := RandomWorld(
+		config.Width,
+		config.Height,
+		config.Chance,
+	)
 	game := NewGame(world)
 	err := game.Run()
 	if err != nil {
