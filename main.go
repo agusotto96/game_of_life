@@ -8,7 +8,7 @@ func main() {
 	width := 640
 	height := 480
 	chance := 15
-	world := NewWorld(width, height, chance)
+	world := RandomWorld(width, height, chance)
 	game := NewGame(world)
 	err := game.Run()
 	if err != nil {

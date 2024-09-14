@@ -10,10 +10,11 @@ type World struct {
 	Height int
 }
 
-func NewWorld(width int, height int, chance int) World {
+func RandomWorld(width int, height int, chance int) World {
 	cells := make([]bool, width*height)
-	for i := 0; i < len(cells); i++ {
-		cells[i] = rand.Intn(chance) == 0
+	for i := range cells {
+		isAlive := rand.Intn(chance) == 0
+		cells[i] = isAlive
 	}
 	return World{
 		Cells:  cells,
@@ -22,26 +23,24 @@ func NewWorld(width int, height int, chance int) World {
 	}
 }
 
-func (w *World) Update() {
+func UpdateWorld(w World) World {
 	cells := make([]bool, w.Width*w.Height)
 	for x := 0; x < w.Width; x++ {
 		for y := 0; y < w.Height; y++ {
 			i := x + y*w.Width
-			n := w.aliveNeighbours(x, y)
-			switch {
-			case n == 2 && w.Cells[i]:
-				cells[i] = true
-			case n == 3:
-				cells[i] = true
-			default:
-				cells[i] = false
-			}
+			n := aliveNeighbours(w, x, y)
+			isAlive := n == 2 && w.Cells[i] || n == 3
+			cells[i] = isAlive
 		}
 	}
-	w.Cells = cells
+	return World{
+		Cells:  cells,
+		Width:  w.Width,
+		Height: w.Height,
+	}
 }
 
-func (w *World) aliveNeighbours(x int, y int) int {
+func aliveNeighbours(w World, x int, y int) int {
 	count := 0
 	for i := -1; i <= 1; i++ {
 		for j := -1; j <= 1; j++ {
