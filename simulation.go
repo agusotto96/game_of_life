@@ -42,20 +42,16 @@ func UpdateWorld(w World) World {
 
 func aliveNeighbours(w World, x int, y int) int {
 	count := 0
-	for i := -1; i <= 1; i++ {
-		for j := -1; j <= 1; j++ {
-			if i == 0 && j == 0 {
-				continue
-			}
-			x := x + j
-			y := y + i
-			if x < 0 || y < 0 || x >= w.Width || y >= w.Height {
-				continue
-			}
-			isAlive := w.Cells[x+y*w.Width]
-			if isAlive {
-				count++
-			}
+	neighbors := [8][2]int{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}}
+	for _, n := range neighbors {
+		x := x + n[0]
+		y := y + n[1]
+		if x < 0 || y < 0 || x >= w.Width || y >= w.Height {
+			continue
+		}
+		isAlive := w.Cells[x+y*w.Width]
+		if isAlive {
+			count++
 		}
 	}
 	return count
