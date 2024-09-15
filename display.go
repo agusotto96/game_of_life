@@ -6,18 +6,21 @@ import (
 
 const rgba = 4
 
-var aliveColor = [rgba]byte{0x39, 0xff, 0x14, 0xff}
-var deadColor = [rgba]byte{0x20, 0x20, 0x20, 0xff}
+type Color = [rgba]byte
 
 type Game struct {
 	World  World
 	Pixels []byte
+	Alive  Color
+	Dead   Color
 }
 
-func NewGame(world World) Game {
+func NewGame(world World, alive, dead Color) Game {
 	return Game{
 		World:  world,
 		Pixels: make([]byte, world.Width*world.Height*rgba),
+		Alive:  alive,
+		Dead:   dead,
 	}
 }
 
@@ -28,9 +31,9 @@ func (g *Game) Update() error {
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	for i, alive := range g.World.Cells {
-		color := deadColor
+		color := g.Dead
 		if alive {
-			color = aliveColor
+			color = g.Alive
 		}
 		for channel, value := range color {
 			g.Pixels[i*rgba+channel] = value
