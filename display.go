@@ -24,6 +24,11 @@ func NewGame(world World, alive, dead Color) Game {
 	}
 }
 
+func RunGame(g Game) error {
+	ebiten.SetWindowTitle("Game of Life")
+	return ebiten.RunGame(&g)
+}
+
 func (g *Game) Update() error {
 	g.World = UpdateWorld(g.World)
 	return nil
@@ -44,9 +49,4 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
 	return g.World.Width, g.World.Height
-}
-
-func (g *Game) Run() error {
-	ebiten.SetWindowTitle("Game of Life")
-	return ebiten.RunGame(g)
 }

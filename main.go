@@ -19,7 +19,7 @@ func main() {
 		config.Alive,
 		config.Dead,
 	)
-	err = game.Run()
+	err = RunGame(game)
 	if err != nil {
 		log.Fatal(err)
 	}
