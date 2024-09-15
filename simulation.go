@@ -29,7 +29,7 @@ func UpdateWorld(w World) World {
 		for y := 0; y < w.Height; y++ {
 			i := x + y*w.Width
 			n := aliveNeighbours(w, x, y)
-			isAlive := n == 2 && w.Cells[i] || n == 3
+			isAlive := n == 3 || n == 2 && w.Cells[i]
 			cells[i] = isAlive
 		}
 	}
@@ -52,7 +52,8 @@ func aliveNeighbours(w World, x int, y int) int {
 			if x < 0 || y < 0 || x >= w.Width || y >= w.Height {
 				continue
 			}
-			if w.Cells[x+y*w.Width] {
+			isAlive := w.Cells[x+y*w.Width]
+			if isAlive {
 				count++
 			}
 		}
