@@ -19,7 +19,7 @@ type Game struct {
 
 func NewGame(world World, alive, dead Color) Game {
 	g := Game{
-		Worlds: make(chan World, 1000),
+		Worlds: make(chan World),
 		Width:  world.Width,
 		Height: world.Height,
 		Pixels: make([]byte, world.Width*world.Height*rgba),
