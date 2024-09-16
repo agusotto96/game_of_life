@@ -9,19 +9,30 @@ const rgba = 4
 type Color = [rgba]byte
 
 type Game struct {
-	World  World
+	Worlds chan World
+	Width  int
+	Height int
 	Pixels []byte
 	Alive  Color
 	Dead   Color
 }
 
 func NewGame(world World, alive, dead Color) Game {
-	return Game{
-		World:  world,
+	g := Game{
+		Worlds: make(chan World, 1000),
+		Width:  world.Width,
+		Height: world.Height,
 		Pixels: make([]byte, world.Width*world.Height*rgba),
 		Alive:  alive,
 		Dead:   dead,
 	}
+	go func() {
+		for {
+			world = UpdateWorld(world)
+			g.Worlds <- world
+		}
+	}()
+	return g
 }
 
 func RunGame(g Game) error {
@@ -30,12 +41,12 @@ func RunGame(g Game) error {
 }
 
 func (g *Game) Update() error {
-	g.World = UpdateWorld(g.World)
 	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	for i, alive := range g.World.Cells {
+	w := <-g.Worlds
+	for i, alive := range w.Cells {
 		color := g.Dead
 		if alive {
 			color = g.Alive
@@ -48,5 +59,5 @@ func (g *Game) Draw(screen *ebiten.Image) {
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
-	return g.World.Width, g.World.Height
+	return g.Width, g.Height
 }
