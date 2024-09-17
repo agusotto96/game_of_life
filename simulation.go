@@ -23,7 +23,18 @@ func RandomWorld(width int, height int, chance int) World {
 	}
 }
 
-func UpdateWorld(w World) World {
+func UpdateWorlds(world World) <-chan World {
+	worlds := make(chan World)
+	go func() {
+		for {
+			world = updateWorld(world)
+			worlds <- world
+		}
+	}()
+	return worlds
+}
+
+func updateWorld(w World) World {
 	cells := make([]bool, w.Width*w.Height)
 	for x := 0; x < w.Width; x++ {
 		for y := 0; y < w.Height; y++ {

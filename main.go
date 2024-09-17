@@ -14,8 +14,11 @@ func main() {
 		config.Height,
 		config.Chance,
 	)
+	worlds := UpdateWorlds(world)
 	game := NewGame(
-		world,
+		worlds,
+		config.Width,
+		config.Height,
 		config.Alive,
 		config.Dead,
 	)

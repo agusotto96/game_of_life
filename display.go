@@ -9,7 +9,7 @@ const rgba = 4
 type Color = [rgba]byte
 
 type Game struct {
-	Worlds chan World
+	Worlds <-chan World
 	Width  int
 	Height int
 	Pixels []byte
@@ -17,21 +17,15 @@ type Game struct {
 	Dead   Color
 }
 
-func NewGame(world World, alive, dead Color) Game {
+func NewGame(worlds <-chan World, width, height int, alive, dead Color) Game {
 	g := Game{
-		Worlds: make(chan World),
-		Width:  world.Width,
-		Height: world.Height,
-		Pixels: make([]byte, world.Width*world.Height*rgba),
+		Worlds: worlds,
+		Width:  width,
+		Height: height,
+		Pixels: make([]byte, width*height*rgba),
 		Alive:  alive,
 		Dead:   dead,
 	}
-	go func() {
-		for {
-			world = UpdateWorld(world)
-			g.Worlds <- world
-		}
-	}()
 	return g
 }
 
