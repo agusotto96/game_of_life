@@ -1,7 +1,11 @@
 package main
 
 import (
+	"context"
 	"log"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 func main() {
@@ -9,16 +13,21 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer cancel()
+
 	world := RandomWorld(
 		config.Width,
 		config.Height,
 		config.Chance,
 	)
-	worlds := UpdateWorlds(world)
+	worlds := UpdateWorlds(ctx, world)
 	game := NewGame(
 		worlds,
 		config.Width,
 		config.Height,
+		config.TPS,
 		config.Alive,
 		config.Dead,
 	)

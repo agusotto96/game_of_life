@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"math/rand"
 )
 
@@ -23,31 +24,46 @@ func RandomWorld(width int, height int, chance int) World {
 	}
 }
 
-func UpdateWorlds(world World) <-chan World {
+func UpdateWorlds(ctx context.Context, world World) <-chan World {
 	worlds := make(chan World)
 	go func() {
+		defer close(worlds)
+		current := world.Cells
+		next := make([]bool, len(current))
+		width, height := world.Width, world.Height
+
 		for {
-			world = updateWorld(world)
-			worlds <- world
+			select {
+			case <-ctx.Done():
+				return
+			case worlds <- World{Cells: current, Width: width, Height: height}:
+			}
+			stepWorld(current, next, width, height)
+			current, next = next, current
 		}
 	}()
 	return worlds
 }
 
 func updateWorld(w World) World {
-	cells := make([]bool, w.Width*w.Height)
-	for x := 0; x < w.Width; x++ {
-		for y := 0; y < w.Height; y++ {
-			i := x + y*w.Width
-			n := aliveNeighbours(w, x, y)
-			isAlive := n == 3 || n == 2 && w.Cells[i]
-			cells[i] = isAlive
-		}
-	}
+	cells := make([]bool, len(w.Cells))
+	stepWorld(w.Cells, cells, w.Width, w.Height)
 	return World{
 		Cells:  cells,
 		Width:  w.Width,
 		Height: w.Height,
+	}
+}
+
+func stepWorld(src, dst []bool, width, height int) {
+	w := World{Cells: src, Width: width, Height: height}
+	for y := 0; y < height; y++ {
+		rowOffset := y * width
+		for x := 0; x < width; x++ {
+			i := x + rowOffset
+			n := aliveNeighbours(w, x, y)
+			dst[i] = n == 3 || (n == 2 && src[i])
+		}
 	}
 }
 
