@@ -1,0 +1,34 @@
+.gitignore
+  s_22efaefaee57dd::t_6a91a3845d6428 1-2
+main.go
+  s_22efaefaee57dd::t_f685a1eafe45af 30
+  s_22efaefaee57dd::t_edffd347fec852 4,6-8,16-19,25
+config.go
+  s_22efaefaee57dd::t_5aa0541d4163d3 13,22,38
+  s_22efaefaee57dd::t_deb818cc23d5d4 42-44,48-61
+  s_22efaefaee57dd::t_bd45ec590f55bb 62-63
+display.go
+  s_22efaefaee57dd::t_736c2a9eba72c6 22,34,39,42,52-54,59-63
+  s_22efaefaee57dd::t_d19d37dc02a0b2 15,21,26,36-38
+  s_22efaefaee57dd::t_5e172a1d71b560 55-58
+simulation.go
+  s_22efaefaee57dd::t_f74020f1204f46 31-34,41-42,49-50,58-66
+  s_22efaefaee57dd::t_eb56d7dde2fff0 4,27,30,36-40
+  s_22efaefaee57dd::t_5fc8f61db2fbbf 67-69
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "cc35179e9bad2ccccd9f91e1c93c10d177129423",
+  "prompts": {},
+  "sessions": {
+    "s_22efaefaee57dd": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "6cedfa69-b310-44eb-9ac1-ba2c2c92eb98",
+        "model": "gemini-3.8-flash"
+      },
+      "human_author": "Agustin Ottolini <aottolini96@gmail.com>"
+    }
+  }
+}
