@@ -9,7 +9,7 @@ const rgba = 4
 type Color = [rgba]byte
 
 type Game struct {
-	Worlds <-chan World
+	World  *World
 	Width  int
 	Height int
 	TPS    int
@@ -18,13 +18,14 @@ type Game struct {
 	Dead   Color
 }
 
-func NewGame(worlds <-chan World, width, height, tps int, alive, dead Color) *Game {
+func NewGame(world *World, tps int, alive, dead Color) *Game {
+	pixels := make([]byte, world.Width*world.Height*rgba)
 	g := &Game{
-		Worlds: worlds,
-		Width:  width,
-		Height: height,
+		World:  world,
+		Width:  world.Width,
+		Height: world.Height,
 		TPS:    tps,
-		Pixels: make([]byte, width*height*rgba),
+		Pixels: pixels,
 		Alive:  alive,
 		Dead:   dead,
 	}
@@ -33,14 +34,12 @@ func NewGame(worlds <-chan World, width, height, tps int, alive, dead Color) *Ga
 
 func RunGame(g *Game) error {
 	ebiten.SetWindowTitle("Game of Life")
-	if g.TPS > 0 {
-		ebiten.SetTPS(g.TPS)
-	}
+	ebiten.SetTPS(g.TPS)
 	return ebiten.RunGame(g)
 }
 
-func (g *Game) updatePixels(w World) {
-	for i, alive := range w.Cells {
+func (g *Game) Update() error {
+	for i, alive := range g.World.Cells {
 		color := g.Dead
 		if alive {
 			color = g.Alive
@@ -49,14 +48,7 @@ func (g *Game) updatePixels(w World) {
 			g.Pixels[i*rgba+channel] = value
 		}
 	}
-}
-
-func (g *Game) Update() error {
-	w, ok := <-g.Worlds
-	if !ok {
-		return ebiten.Termination
-	}
-	g.updatePixels(w)
+	g.World.Update()
 	return nil
 }
 

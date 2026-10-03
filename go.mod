@@ -1,6 +1,6 @@
 module github.com/agusotto96/game_of_life
 
-go 1.20
+go 1.22
 
 require github.com/hajimehoshi/ebiten/v2 v2.7.8
 
