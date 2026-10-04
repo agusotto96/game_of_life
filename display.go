@@ -51,17 +51,13 @@ func (g *Game) Update() error {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	pixIdx := 0
-	for y := range g.Height {
-		for x := range g.Width {
-			color := g.Dead
-			if g.World.At(x, y) {
-				color = g.Alive
-			}
-			for channel, value := range color {
-				g.Pixels[pixIdx+channel] = value
-			}
-			pixIdx += bytesPerPixel
+	for i, alive := range g.World.Cells {
+		color := g.Dead
+		if alive {
+			color = g.Alive
+		}
+		for channel, value := range color {
+			g.Pixels[i*bytesPerPixel+channel] = value
 		}
 	}
 	screen.WritePixels(g.Pixels)
