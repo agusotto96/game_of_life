@@ -1,0 +1,28 @@
+display.go
+  s_22efaefaee57dd::t_5ba42daa1fc2cd 54-64
+simulation.go
+  s_22efaefaee57dd::t_e5302128d9a17f 15,23-24,26,30,37,50,56
+  h_ec1ec3e49ddcc9 22,25,28,44,60,65
+  s_22efaefaee57dd::t_bdccbb051d6e46 38-40,42-43
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "138fdd1f68daf8e5d3ddb7804362072c189f75b8",
+  "prompts": {},
+  "humans": {
+    "h_ec1ec3e49ddcc9": {
+      "author": "Agustin Ottolini <aottolini96@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_22efaefaee57dd": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "6cedfa69-b310-44eb-9ac1-ba2c2c92eb98",
+        "model": "gemini-3.8-flash"
+      },
+      "human_author": "Agustin Ottolini <aottolini96@gmail.com>"
+    }
+  }
+}
