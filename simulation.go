@@ -2,6 +2,8 @@ package main
 
 import (
 	"math/rand"
+	"runtime"
+	"sync"
 )
 
 const (
@@ -34,20 +36,42 @@ func NewWorld(width int, height int, chance int) *World {
 }
 
 func (w *World) Update() {
-	for y := range w.Height {
-		for x := range w.Width {
-			i := x + y*w.Width
-			n := w.aliveNeighbours(x, y)
-			switch n {
-			case neighborsToBirth:
-				w.next[i] = true
-			case neighborsToSurvive:
-				w.next[i] = w.Cells[i]
-			default:
-				w.next[i] = false
-			}
-		}
+	numWorkers := runtime.NumCPU()
+	if numWorkers > w.Height {
+		numWorkers = w.Height
 	}
+
+	chunkSize := w.Height / numWorkers
+	var wg sync.WaitGroup
+	wg.Add(numWorkers)
+
+	for worker := range numWorkers {
+		startY := worker * chunkSize
+		endY := startY + chunkSize
+		if worker == numWorkers-1 {
+			endY = w.Height
+		}
+
+		go func(fromY, toY int) {
+			defer wg.Done()
+			for y := fromY; y < toY; y++ {
+				for x := range w.Width {
+					i := x + y*w.Width
+					n := w.aliveNeighbours(x, y)
+					switch n {
+					case neighborsToBirth:
+						w.next[i] = true
+					case neighborsToSurvive:
+						w.next[i] = w.Cells[i]
+					default:
+						w.next[i] = false
+					}
+				}
+			}
+		}(startY, endY)
+	}
+
+	wg.Wait()
 	w.Cells, w.next = w.next, w.Cells
 }
 
