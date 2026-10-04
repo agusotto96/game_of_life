@@ -1,0 +1,37 @@
+display.go
+  s_22efaefaee57dd::t_1e2778e558296a 7-10,12,27,41,60
+  s_22efaefaee57dd::t_98bc7bb7b8aceb 49-50
+  s_22efaefaee57dd::t_93d6f0bb952376 24-25
+  h_ec1ec3e49ddcc9 52-53,66
+  s_22efaefaee57dd::t_a7a04e93c516c7 43
+  s_22efaefaee57dd::t_599536ec495d86 42
+  h_ec1ec3e49ddcc9 51
+config.go
+  s_22efaefaee57dd::t_4d37ce161a57bf 11
+  s_22efaefaee57dd::t_21b60cbbbeb303 12
+  s_22efaefaee57dd::t_627d9c4f260f61 7-10,13-17,30-35,76-77
+simulation.go
+  h_ec1ec3e49ddcc9 12
+  s_22efaefaee57dd::t_03fc9ce2203615 7-11,13,38,40,43,45,57
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "de1ddef3c3321e122352acc0f9c30c8e8a503b1e",
+  "prompts": {},
+  "humans": {
+    "h_ec1ec3e49ddcc9": {
+      "author": "Agustin Ottolini <aottolini96@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_22efaefaee57dd": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "6cedfa69-b310-44eb-9ac1-ba2c2c92eb98",
+        "model": "gemini-3.8-flash"
+      },
+      "human_author": "Agustin Ottolini <aottolini96@gmail.com>"
+    }
+  }
+}
