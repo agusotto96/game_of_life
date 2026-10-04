@@ -1,0 +1,14 @@
+simulation.go
+  h_ec1ec3e49ddcc9 39
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "500c91ac51b62f9646d631d185dfd5131d95f0c2",
+  "prompts": {},
+  "humans": {
+    "h_ec1ec3e49ddcc9": {
+      "author": "Agustin Ottolini <aottolini96@gmail.com>"
+    }
+  }
+}
