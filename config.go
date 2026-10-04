@@ -4,6 +4,17 @@ import (
 	"encoding/hex"
 	"errors"
 	"flag"
+	"fmt"
+)
+
+const (
+	defaultWidth    = 960
+	defaultHeight   = 600
+	defaultChance   = 15
+	defaultTPS      = 60
+	defaultAliveHex = "39ff14ff"
+	defaultDeadHex  = "202020ff"
+	hexColorLength  = 8
 )
 
 type Config struct {
@@ -16,12 +27,12 @@ type Config struct {
 }
 
 func ReadConfig() (Config, error) {
-	width := flag.Int("width", 640, "The width of the Game of Life grid (in cells).")
-	height := flag.Int("height", 480, "The height of the Game of Life grid (in cells).")
-	chance := flag.Int("chance", 15, "The probability (1 in X) that a cell starts alive. Lower values increase the number of alive cells.")
-	tps := flag.Int("tps", 60, "The number of simulation updates per second (Ticks Per Second).")
-	aliveHex := flag.String("alive", "39ff14ff", "Hexadecimal RGBA color for alive cells.")
-	deadHex := flag.String("dead", "202020ff", "Hexadecimal RGBA color for dead cells.")
+	width := flag.Int("width", defaultWidth, "The width of the Game of Life grid (in cells).")
+	height := flag.Int("height", defaultHeight, "The height of the Game of Life grid (in cells).")
+	chance := flag.Int("chance", defaultChance, "The probability (1 in X) that a cell starts alive. Lower values increase the number of alive cells.")
+	tps := flag.Int("tps", defaultTPS, "The number of simulation updates per second (Ticks Per Second).")
+	aliveHex := flag.String("alive", defaultAliveHex, "Hexadecimal RGBA color for alive cells.")
+	deadHex := flag.String("dead", defaultDeadHex, "Hexadecimal RGBA color for dead cells.")
 	flag.Parse()
 	alive, err := parseColor(*aliveHex)
 	if err != nil {
@@ -62,8 +73,8 @@ func validateConfig(c Config) error {
 }
 
 func parseColor(hexStr string) (Color, error) {
-	if len(hexStr) != 8 {
-		return Color{}, errors.New("invalid hexadecimal color format, expected 8 characters (RRGGBBAA)")
+	if len(hexStr) != hexColorLength {
+		return Color{}, fmt.Errorf("invalid hexadecimal color format, expected %d characters (RRGGBBAA)", hexColorLength)
 	}
 	bytes, err := hex.DecodeString(hexStr)
 	if err != nil {

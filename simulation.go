@@ -4,6 +4,13 @@ import (
 	"math/rand"
 )
 
+const (
+	neighborsToBirth   = 3
+	neighborsToSurvive = 2
+)
+
+var neighborOffsets = [8][2]int{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}}
+
 type World struct {
 	Cells  []bool
 	next   []bool
@@ -28,13 +35,14 @@ func NewWorld(width int, height int, chance int) *World {
 
 func (w *World) Update() {
 	for y := range w.Height {
+		rowOffset := y * w.Width
 		for x := range w.Width {
-			i := x + (y * w.Width)
+			i := x + rowOffset
 			n := w.aliveNeighbours(x, y)
 			switch n {
-			case 3:
+			case neighborsToBirth:
 				w.next[i] = true
-			case 2:
+			case neighborsToSurvive:
 				w.next[i] = w.Cells[i]
 			default:
 				w.next[i] = false
@@ -46,8 +54,7 @@ func (w *World) Update() {
 
 func (w *World) aliveNeighbours(x, y int) int {
 	count := 0
-	neighbors := [8][2]int{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}}
-	for _, n := range neighbors {
+	for _, n := range neighborOffsets {
 		x := x + n[0]
 		y := y + n[1]
 		if x < 0 || y < 0 || x >= w.Width || y >= w.Height {
