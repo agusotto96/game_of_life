@@ -1,0 +1,19 @@
+simulation.go
+  s_22efaefaee57dd::t_f03a9e8ed7f791 5-6,39-52,54-71,73-74
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "062fb49d4e0de5de835fb6f73be35de10b9b0745",
+  "prompts": {},
+  "sessions": {
+    "s_22efaefaee57dd": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "6cedfa69-b310-44eb-9ac1-ba2c2c92eb98",
+        "model": "gemini-3.8-flash"
+      },
+      "human_author": "Agustin Ottolini <aottolini96@gmail.com>"
+    }
+  }
+}
