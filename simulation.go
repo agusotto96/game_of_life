@@ -35,9 +35,8 @@ func NewWorld(width int, height int, chance int) *World {
 
 func (w *World) Update() {
 	for y := range w.Height {
-		rowOffset := y * w.Width
 		for x := range w.Width {
-			i := x + rowOffset
+			i := x + y*w.Width
 			n := w.aliveNeighbours(x, y)
 			switch n {
 			case neighborsToBirth:
