@@ -12,55 +12,57 @@ const (
 var neighborOffsets = [8][2]int{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}}
 
 type World struct {
-	Cells  []bool
+	cells  []bool
 	next   []bool
 	Width  int
 	Height int
 }
 
 func NewWorld(width int, height int, chance int) *World {
-	cells := make([]bool, width*height)
-	for i := range cells {
-		isAlive := rand.Intn(chance) == 0
-		cells[i] = isAlive
+	cells := make([]bool, (width+2)*(height+2))
+	for y := 1; y <= height; y++ {
+		for x := 1; x <= width; x++ {
+			cells[x+(y*(width+2))] = rand.Intn(chance) == 0
+		}
 	}
-	next := make([]bool, width*height)
+	next := make([]bool, len(cells))
 	return &World{
-		Cells:  cells,
+		cells:  cells,
 		next:   next,
 		Width:  width,
 		Height: height,
 	}
 }
 
+func (w *World) At(x, y int) bool {
+	return w.cells[(x+1)+(y+1)*(w.Width+2)]
+}
+
 func (w *World) Update() {
-	for y := range w.Height {
-		for x := range w.Width {
-			i := x + y*w.Width
+	for y := 1; y <= w.Height; y++ {
+		for x := 1; x <= w.Width; x++ {
+			i := x + (y * (w.Width + 2))
 			n := w.aliveNeighbours(x, y)
 			switch n {
 			case neighborsToBirth:
 				w.next[i] = true
 			case neighborsToSurvive:
-				w.next[i] = w.Cells[i]
+				w.next[i] = w.cells[i]
 			default:
 				w.next[i] = false
 			}
 		}
 	}
-	w.Cells, w.next = w.next, w.Cells
+	w.cells, w.next = w.next, w.cells
 }
 
 func (w *World) aliveNeighbours(x, y int) int {
+	width := w.Width + 2
 	count := 0
 	for _, n := range neighborOffsets {
 		x := x + n[0]
 		y := y + n[1]
-		if x < 0 || y < 0 || x >= w.Width || y >= w.Height {
-			continue
-		}
-		isAlive := w.Cells[x+y*w.Width]
-		if isAlive {
+		if w.cells[x+y*width] {
 			count++
 		}
 	}
