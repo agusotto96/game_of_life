@@ -2,6 +2,8 @@
 
 A Conway's Game of Life implementation in Go using [Ebitengine](https://ebitengine.org/).
 
+[![Play Online](https://img.shields.io/badge/Play_Online-GitHub_Pages-blue?style=for-the-badge&logo=webassembly)](https://agusotto96.github.io/game_of_life/)
+
 ## Usage
 
 ```bash
@@ -15,6 +17,8 @@ See available flags and defaults:
 ```bash
 go run . -h
 ```
+
+**Web Version**: When playing online, you can configure the simulation by passing parameters in the URL just like CLI flags (e.g., `?rule=B36/S23&chance=0.2&tps=30`).
 
 ## Examples
 

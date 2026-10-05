@@ -1,0 +1,52 @@
+name: Deploy WebAssembly to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+
+      - name: Build WebAssembly
+        run: |
+          mkdir -p public
+          # Copy HTML wrapper
+          cp web/index.html public/
+          # Copy Go's wasm_exec.js
+          cp "$(find $(go env GOROOT) -name wasm_exec.js | head -n 1)" public/
+          # Build the Go project to WASM
+          GOOS=js GOARCH=wasm go build -o public/game.wasm .
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './public'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game of Life</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #202020;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            font-family: sans-serif;
+            overflow: hidden;
+        }
+        canvas {
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <script src="wasm_exec.js"></script>
+    <script>
+        if (!WebAssembly.instantiateStreaming) {
+            WebAssembly.instantiateStreaming = async (resp, importObject) => {
+                const source = await (await resp).arrayBuffer();
+                return await WebAssembly.instantiate(source, importObject);
+            };
+        }
+        const go = new Go();
+        const urlParams = new URLSearchParams(window.location.search);
+        const args = ["game"];
+        for (const [key, value] of urlParams.entries()) {
+            args.push(`-${key}`);
+            args.push(value);
+        }
+        go.argv = args;
+        WebAssembly.instantiateStreaming(fetch("game.wasm"), go.importObject).then((result) => {
+            go.run(result.instance);
+        }).catch((err) => {
+            console.error("Failed to initialize WebAssembly:", err);
+        });
+    </script>
+</body>
+</html>
