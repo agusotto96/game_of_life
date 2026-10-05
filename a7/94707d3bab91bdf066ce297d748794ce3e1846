@@ -1,0 +1,21 @@
+web/index.html
+  s_d16e114db83e28::t_4f573102e87acd 43-53,55
+  s_d16e114db83e28::t_9f13268a36506e 8-11
+  s_d16e114db83e28::t_7fc7aa366daf0d 15-16,27,42,54,56-74,81
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a794707d3bab91bdf066ce297d748794ce3e1846",
+  "prompts": {},
+  "sessions": {
+    "s_d16e114db83e28": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "12a4aca2-fd4e-44ba-a9b8-e98ef9f600ea",
+        "model": "gemini-3.8-flash"
+      },
+      "human_author": "Agustin Ottolini <aottolini96@gmail.com>"
+    }
+  }
+}
