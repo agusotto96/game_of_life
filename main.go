@@ -5,23 +5,13 @@ import (
 )
 
 func main() {
-	config, err := ReadConfig()
+	c, err := ReadConfig()
 	if err != nil {
 		log.Fatal(err)
 	}
-	world := NewWorld(
-		config.Width,
-		config.Height,
-		config.Chance,
-		config.Rule,
-	)
-	game := NewGame(
-		world,
-		config.TPS,
-		config.Alive,
-		config.Dead,
-	)
-	err = RunGame(game)
+	w := NewWorld(c.Width, c.Height, c.Chance, c.Rule)
+	g := NewGame(w, c.TPS, c.Alive, c.Dead)
+	err = g.Run()
 	if err != nil {
 		log.Fatal(err)
 	}

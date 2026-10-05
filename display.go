@@ -1,12 +1,16 @@
 package main
 
 import (
+	"encoding/hex"
+	"fmt"
+
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
 const (
-	bytesPerPixel = 4
-	windowTitle   = "Game of Life"
+	bytesPerPixel  = 4
+	hexColorLength = 8
+	windowTitle    = "Game of Life"
 )
 
 type Color = [bytesPerPixel]byte
@@ -23,6 +27,17 @@ type Game struct {
 
 var _ ebiten.Game = (*Game)(nil)
 
+func NewColor(hexStr string) (Color, error) {
+	if len(hexStr) != hexColorLength {
+		return Color{}, fmt.Errorf("invalid hexadecimal color format, expected %d characters (RRGGBBAA)", hexColorLength)
+	}
+	bytes, err := hex.DecodeString(hexStr)
+	if err != nil {
+		return Color{}, err
+	}
+	return (Color)(bytes), nil
+}
+
 func NewGame(world *World, tps int, alive, dead Color) *Game {
 	pixels := make([]byte, world.Width*world.Height*bytesPerPixel)
 	g := &Game{
@@ -35,14 +50,6 @@ func NewGame(world *World, tps int, alive, dead Color) *Game {
 		Dead:   dead,
 	}
 	return g
-}
-
-func RunGame(g *Game) error {
-	ebiten.SetWindowTitle(windowTitle)
-	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
-	ebiten.SetWindowSize(g.Width, g.Height)
-	ebiten.SetTPS(g.TPS)
-	return ebiten.RunGame(g)
 }
 
 func (g *Game) Update() error {
@@ -65,4 +72,12 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 func (g *Game) Layout(_, _ int) (screenWidth, screenHeight int) {
 	return g.Width, g.Height
+}
+
+func (g *Game) Run() error {
+	ebiten.SetWindowTitle(windowTitle)
+	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
+	ebiten.SetWindowSize(g.Width, g.Height)
+	ebiten.SetTPS(g.TPS)
+	return ebiten.RunGame(g)
 }

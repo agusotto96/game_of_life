@@ -12,26 +12,18 @@ import (
 
 const maxNeighbors = 8
 
+var (
+	ruleRegex       = regexp.MustCompile(`^B([0-8]*)/S([0-8]*)$`)
+	neighborOffsets = [8][2]int{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}}
+)
+
 type Rule struct {
 	raw     string
 	birth   [maxNeighbors + 1]bool
 	survive [maxNeighbors + 1]bool
 }
 
-func (r Rule) String() string {
-	return r.raw
-}
-
-func (r Rule) NextState(alive bool, neighbors int) bool {
-	if alive {
-		return r.survive[neighbors]
-	}
-	return r.birth[neighbors]
-}
-
-var ruleRegex = regexp.MustCompile(`^B([0-8]*)/S([0-8]*)$`)
-
-func ParseRule(s string) (Rule, error) {
+func NewRule(s string) (Rule, error) {
 	matches := ruleRegex.FindStringSubmatch(strings.ToUpper(strings.TrimSpace(s)))
 	if len(matches) != 3 {
 		return Rule{}, errors.New("invalid rule format, expected B.../S... (e.g. B3/S23)")
@@ -52,7 +44,16 @@ func ParseRule(s string) (Rule, error) {
 	return rule, nil
 }
 
-var neighborOffsets = [8][2]int{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}}
+func (r *Rule) String() string {
+	return r.raw
+}
+
+func (r *Rule) nextState(alive bool, neighbors int) bool {
+	if alive {
+		return r.survive[neighbors]
+	}
+	return r.birth[neighbors]
+}
 
 type World struct {
 	Cells  []bool
@@ -100,7 +101,7 @@ func (w *World) Update() {
 				for x := range w.Width {
 					i := x + y*w.Width
 					n := w.aliveNeighbours(x, y)
-					w.next[i] = w.Rule.NextState(w.Cells[i], n)
+					w.next[i] = w.Rule.nextState(w.Cells[i], n)
 				}
 			}
 		}(startY, endY)

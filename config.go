@@ -1,10 +1,8 @@
 package main
 
 import (
-	"encoding/hex"
 	"errors"
 	"flag"
-	"fmt"
 )
 
 const (
@@ -15,7 +13,6 @@ const (
 	defaultRule     = "B3/S23"
 	defaultAliveHex = "39ff14ff"
 	defaultDeadHex  = "202020ff"
-	hexColorLength  = 8
 )
 
 type Config struct {
@@ -28,6 +25,30 @@ type Config struct {
 	Dead   Color
 }
 
+func NewConfig(width, height int, chance float64, tps int, rule Rule, alive, dead Color) (Config, error) {
+	if width <= 0 {
+		return Config{}, errors.New("width must be greater than 0")
+	}
+	if height <= 0 {
+		return Config{}, errors.New("height must be greater than 0")
+	}
+	if chance <= 0 || chance > 1 {
+		return Config{}, errors.New("chance must be between 0.0 and 1.0")
+	}
+	if tps <= 0 {
+		return Config{}, errors.New("tps must be greater than 0")
+	}
+	return Config{
+		Width:  width,
+		Height: height,
+		Chance: chance,
+		TPS:    tps,
+		Rule:   rule,
+		Alive:  alive,
+		Dead:   dead,
+	}, nil
+}
+
 func ReadConfig() (Config, error) {
 	width := flag.Int("width", defaultWidth, "The width of the Game of Life grid (in cells).")
 	height := flag.Int("height", defaultHeight, "The height of the Game of Life grid (in cells).")
@@ -38,56 +59,18 @@ func ReadConfig() (Config, error) {
 	deadHex := flag.String("dead", defaultDeadHex, "Hexadecimal RGBA color for dead cells.")
 	flag.Parse()
 
-	rule, err := ParseRule(*ruleStr)
+	rule, err := NewRule(*ruleStr)
 	if err != nil {
 		return Config{}, err
 	}
-	alive, err := parseColor(*aliveHex)
+	alive, err := NewColor(*aliveHex)
 	if err != nil {
 		return Config{}, err
 	}
-	dead, err := parseColor(*deadHex)
+	dead, err := NewColor(*deadHex)
 	if err != nil {
 		return Config{}, err
 	}
-	config := Config{
-		Width:  *width,
-		Height: *height,
-		Chance: *chance,
-		TPS:    *tps,
-		Rule:   rule,
-		Alive:  alive,
-		Dead:   dead,
-	}
-	if err := validateConfig(config); err != nil {
-		return Config{}, err
-	}
-	return config, nil
-}
 
-func validateConfig(c Config) error {
-	if c.Width <= 0 {
-		return errors.New("width must be greater than 0")
-	}
-	if c.Height <= 0 {
-		return errors.New("height must be greater than 0")
-	}
-	if c.Chance <= 0 || c.Chance > 1 {
-		return errors.New("chance must be between 0.0 and 1.0")
-	}
-	if c.TPS <= 0 {
-		return errors.New("tps must be greater than 0")
-	}
-	return nil
-}
-
-func parseColor(hexStr string) (Color, error) {
-	if len(hexStr) != hexColorLength {
-		return Color{}, fmt.Errorf("invalid hexadecimal color format, expected %d characters (RRGGBBAA)", hexColorLength)
-	}
-	bytes, err := hex.DecodeString(hexStr)
-	if err != nil {
-		return Color{}, err
-	}
-	return (Color)(bytes), nil
+	return NewConfig(*width, *height, *chance, *tps, rule, alive, dead)
 }
