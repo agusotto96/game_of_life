@@ -1,0 +1,27 @@
+go.mod
+  s_22efaefaee57dd::t_ac6f745d861628 3,10-12
+  s_22efaefaee57dd::t_e4979e6ecec873 5,8
+go.sum
+  s_22efaefaee57dd::t_786696d7fa1975 1-2,5-14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8c2c7dc4a4711b569fa6752d6d06acfa3dade71c",
+  "prompts": {},
+  "humans": {
+    "h_ec1ec3e49ddcc9": {
+      "author": "Agustin Ottolini <aottolini96@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_22efaefaee57dd": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "6cedfa69-b310-44eb-9ac1-ba2c2c92eb98",
+        "model": "gemini-3.8-flash"
+      },
+      "human_author": "Agustin Ottolini <aottolini96@gmail.com>"
+    }
+  }
+}
