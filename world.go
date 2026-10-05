@@ -17,65 +17,57 @@ var (
 	neighborOffsets = [8][2]int{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}}
 )
 
-type Rule struct {
-	raw     string
+type World struct {
+	Cells   []bool
+	next    []bool
+	Width   int
+	Height  int
+	Rule    string
 	birth   [maxNeighbors + 1]bool
 	survive [maxNeighbors + 1]bool
 }
 
-func NewRule(s string) (Rule, error) {
-	matches := ruleRegex.FindStringSubmatch(strings.ToUpper(strings.TrimSpace(s)))
-	if len(matches) != 3 {
-		return Rule{}, errors.New("invalid rule format, expected B.../S... (e.g. B3/S23)")
+func NewWorld(width int, height int, chance float64, rule string) (*World, error) {
+	if width <= 0 {
+		return nil, errors.New("width must be greater than 0")
+	}
+	if height <= 0 {
+		return nil, errors.New("height must be greater than 0")
+	}
+	if chance <= 0 || chance > 1 {
+		return nil, errors.New("chance must be between 0.0 and 1.0")
 	}
 
-	var rule Rule
-	rule.raw = matches[0]
+	matches := ruleRegex.FindStringSubmatch(strings.ToUpper(strings.TrimSpace(rule)))
+	if len(matches) != 3 {
+		return nil, errors.New("invalid rule format, expected B.../S... (e.g. B3/S23)")
+	}
 
+	var birth, survive [maxNeighbors + 1]bool
 	for _, ch := range matches[1] {
 		n, _ := strconv.Atoi(string(ch))
-		rule.birth[n] = true
+		birth[n] = true
 	}
 	for _, ch := range matches[2] {
 		n, _ := strconv.Atoi(string(ch))
-		rule.survive[n] = true
+		survive[n] = true
 	}
 
-	return rule, nil
-}
-
-func (r *Rule) String() string {
-	return r.raw
-}
-
-func (r *Rule) nextState(alive bool, neighbors int) bool {
-	if alive {
-		return r.survive[neighbors]
-	}
-	return r.birth[neighbors]
-}
-
-type World struct {
-	Cells  []bool
-	next   []bool
-	Width  int
-	Height int
-	Rule   Rule
-}
-
-func NewWorld(width int, height int, chance float64, rule Rule) *World {
 	cells := make([]bool, width*height)
 	for i := range cells {
 		cells[i] = rand.Float64() < chance
 	}
 	next := make([]bool, width*height)
+
 	return &World{
-		Cells:  cells,
-		next:   next,
-		Width:  width,
-		Height: height,
-		Rule:   rule,
-	}
+		Cells:   cells,
+		next:    next,
+		Width:   width,
+		Height:  height,
+		Rule:    matches[0],
+		birth:   birth,
+		survive: survive,
+	}, nil
 }
 
 func (w *World) Update() {
@@ -101,7 +93,7 @@ func (w *World) Update() {
 				for x := range w.Width {
 					i := x + y*w.Width
 					n := w.aliveNeighbours(x, y)
-					w.next[i] = w.Rule.nextState(w.Cells[i], n)
+					w.next[i] = w.nextState(w.Cells[i], n)
 				}
 			}
 		}(startY, endY)
@@ -125,4 +117,11 @@ func (w *World) aliveNeighbours(x, y int) int {
 		}
 	}
 	return count
+}
+
+func (w *World) nextState(alive bool, neighbors int) bool {
+	if alive {
+		return w.survive[neighbors]
+	}
+	return w.birth[neighbors]
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/hex"
+	"errors"
 	"fmt"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -38,7 +39,14 @@ func NewColor(hexStr string) (Color, error) {
 	return (Color)(bytes), nil
 }
 
-func NewGame(world *World, tps int, alive, dead Color) *Game {
+func NewGame(world *World, tps int, alive, dead Color) (*Game, error) {
+	if world == nil {
+		return nil, errors.New("world cannot be nil")
+	}
+	if tps <= 0 {
+		return nil, errors.New("tps must be greater than 0")
+	}
+
 	pixels := make([]byte, world.Width*world.Height*bytesPerPixel)
 	g := &Game{
 		World:  world,
@@ -49,7 +57,7 @@ func NewGame(world *World, tps int, alive, dead Color) *Game {
 		Alive:  alive,
 		Dead:   dead,
 	}
-	return g
+	return g, nil
 }
 
 func (g *Game) Update() error {
