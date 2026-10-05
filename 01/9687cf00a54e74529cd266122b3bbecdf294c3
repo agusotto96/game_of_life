@@ -1,0 +1,36 @@
+main.go
+  h_ec1ec3e49ddcc9 8,12-14
+config.go
+  h_ec1ec3e49ddcc9 62,66,70
+  s_22efaefaee57dd::t_2aa85e88e8a896 28-51,75
+display.go
+  s_22efaefaee57dd::t_32a08cda4a4520 11-13,30-39,83
+  h_ec1ec3e49ddcc9 4-6,77
+  s_22efaefaee57dd::t_27f17c157a1f77 76,78-82
+  s_22efaefaee57dd::t_b4c1612f7b16e0 40
+simulation.go
+  s_22efaefaee57dd::t_acc9991a35404d 15-16,18-19,49-50,52-55
+  s_22efaefaee57dd::t_6976dae45d2b94 47-48
+  h_ec1ec3e49ddcc9 17,26,51,56,104
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "019687cf00a54e74529cd266122b3bbecdf294c3",
+  "prompts": {},
+  "humans": {
+    "h_ec1ec3e49ddcc9": {
+      "author": "Agustin Ottolini <aottolini96@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_22efaefaee57dd": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "6cedfa69-b310-44eb-9ac1-ba2c2c92eb98",
+        "model": "gemini-3.8-flash"
+      },
+      "human_author": "Agustin Ottolini <aottolini96@gmail.com>"
+    }
+  }
+}
