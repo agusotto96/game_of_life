@@ -1,0 +1,32 @@
+.github/workflows/pages.yml
+  s_dcdde3fa888a7c::t_90725728853a99 1-37,39-52
+  s_dcdde3fa888a7c::t_9975f612293224 38
+.gitignore
+  s_dcdde3fa888a7c::t_5b7ac96020d199 3
+web/index.html
+  s_dcdde3fa888a7c::t_9b55713a0d864e 1-49
+README.md
+  s_dcdde3fa888a7c::t_a60a4ee0e2e8a7 21-22
+  s_dcdde3fa888a7c::t_2ad24fd6a8de5c 5-6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "e83bf1842118a6f8861d00c0a5ce8633d8fd8fa0",
+  "prompts": {},
+  "humans": {
+    "h_ec1ec3e49ddcc9": {
+      "author": "Agustin Ottolini <aottolini96@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_dcdde3fa888a7c": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "b78f6471-0b40-4ac6-a82a-2f1ed5808e2f",
+        "model": "gemini-3.1-pro-preview"
+      },
+      "human_author": "Agustin Ottolini <aottolini96@gmail.com>"
+    }
+  }
+}
