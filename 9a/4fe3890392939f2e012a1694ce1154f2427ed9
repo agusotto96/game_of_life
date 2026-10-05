@@ -1,0 +1,36 @@
+main.go
+  s_22efaefaee57dd::t_115346999bbe73 4,8-17,19-37,41-42,46-49
+game.go
+  s_a6f4e594ae7abe::t_71c4ac513e6bb7 5,42-49,60
+world.go
+  s_a6f4e594ae7abe::t_1c23336891a787 20-25,30-38,41-44,46,49,53,61,63-70,96,121-127
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "9a4fe3890392939f2e012a1694ce1154f2427ed9",
+  "prompts": {},
+  "humans": {
+    "h_ec1ec3e49ddcc9": {
+      "author": "Agustin Ottolini <aottolini96@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_22efaefaee57dd": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "6cedfa69-b310-44eb-9ac1-ba2c2c92eb98",
+        "model": "gemini-3.8-flash"
+      },
+      "human_author": "Agustin Ottolini <aottolini96@gmail.com>"
+    },
+    "s_a6f4e594ae7abe": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "dbc43867-7e71-4f9f-b31c-b856938990c7",
+        "model": "gemini-3.8-flash"
+      },
+      "human_author": "Agustin Ottolini <aottolini96@gmail.com>"
+    }
+  }
+}
