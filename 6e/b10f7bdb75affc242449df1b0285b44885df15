@@ -1,0 +1,40 @@
+simulation.go
+  s_22efaefaee57dd::t_12052c47751c67 36,51-52
+  s_22efaefaee57dd::t_86c416399905d8 4,6,9,19-20,33-34,37-39,50
+  s_22efaefaee57dd::t_fb33863d97c7a0 103
+  s_22efaefaee57dd::t_6a6af5ffb6f947 68
+  s_22efaefaee57dd::t_927dd6eaaad8ef 32,35
+  s_22efaefaee57dd::t_10cf957ae7a34d 40-41,43-49
+  s_22efaefaee57dd::t_02ec1707a95159 8,42
+  s_22efaefaee57dd::t_0c097fc2e31c5f 25-26,28,30-31
+  s_22efaefaee57dd::t_8f8589bad12f77 13-15,53,62,65,76
+  s_22efaefaee57dd::t_4bd9b5ccf18943 16-18,21-24,27,29
+config.go
+  s_22efaefaee57dd::t_eb0d6faa4225c3 13,24,34
+  s_22efaefaee57dd::t_e1c96429583d75 15,26,36,40,42-44,58
+  s_22efaefaee57dd::t_a01b3abdbaf49c 41
+  s_22efaefaee57dd::t_5dfa152374d13f 75-76
+main.go
+  s_22efaefaee57dd::t_3d37891157e3a3 16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "6eb10f7bdb75affc242449df1b0285b44885df15",
+  "prompts": {},
+  "humans": {
+    "h_ec1ec3e49ddcc9": {
+      "author": "Agustin Ottolini <aottolini96@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_22efaefaee57dd": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "6cedfa69-b310-44eb-9ac1-ba2c2c92eb98",
+        "model": "gemini-3.8-flash"
+      },
+      "human_author": "Agustin Ottolini <aottolini96@gmail.com>"
+    }
+  }
+}
