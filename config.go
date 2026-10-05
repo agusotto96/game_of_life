@@ -10,8 +10,9 @@ import (
 const (
 	defaultWidth    = 960
 	defaultHeight   = 600
-	defaultChance   = 15
+	defaultChance   = 0.15
 	defaultTPS      = 60
+	defaultRule     = "B3/S23"
 	defaultAliveHex = "39ff14ff"
 	defaultDeadHex  = "202020ff"
 	hexColorLength  = 8
@@ -20,8 +21,9 @@ const (
 type Config struct {
 	Width  int
 	Height int
-	Chance int
+	Chance float64
 	TPS    int
+	Rule   Rule
 	Alive  Color
 	Dead   Color
 }
@@ -29,11 +31,17 @@ type Config struct {
 func ReadConfig() (Config, error) {
 	width := flag.Int("width", defaultWidth, "The width of the Game of Life grid (in cells).")
 	height := flag.Int("height", defaultHeight, "The height of the Game of Life grid (in cells).")
-	chance := flag.Int("chance", defaultChance, "The probability (1 in X) that a cell starts alive. Lower values increase the number of alive cells.")
+	chance := flag.Float64("chance", defaultChance, "The probability (0.0 to 1.0) that a cell starts alive.")
 	tps := flag.Int("tps", defaultTPS, "The number of simulation updates per second (Ticks Per Second).")
+	ruleStr := flag.String("rule", defaultRule, "Life-like cellular automaton rule in B.../S... format (e.g. B3/S23, B36/S23, B35678/S5678).")
 	aliveHex := flag.String("alive", defaultAliveHex, "Hexadecimal RGBA color for alive cells.")
 	deadHex := flag.String("dead", defaultDeadHex, "Hexadecimal RGBA color for dead cells.")
 	flag.Parse()
+
+	rule, err := ParseRule(*ruleStr)
+	if err != nil {
+		return Config{}, err
+	}
 	alive, err := parseColor(*aliveHex)
 	if err != nil {
 		return Config{}, err
@@ -47,6 +55,7 @@ func ReadConfig() (Config, error) {
 		Height: *height,
 		Chance: *chance,
 		TPS:    *tps,
+		Rule:   rule,
 		Alive:  alive,
 		Dead:   dead,
 	}
@@ -63,8 +72,8 @@ func validateConfig(c Config) error {
 	if c.Height <= 0 {
 		return errors.New("height must be greater than 0")
 	}
-	if c.Chance <= 0 {
-		return errors.New("chance must be greater than 0")
+	if c.Chance <= 0 || c.Chance > 1 {
+		return errors.New("chance must be between 0.0 and 1.0")
 	}
 	if c.TPS <= 0 {
 		return errors.New("tps must be greater than 0")

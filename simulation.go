@@ -1,15 +1,56 @@
 package main
 
 import (
+	"errors"
 	"math/rand"
+	"regexp"
 	"runtime"
+	"strconv"
+	"strings"
 	"sync"
 )
 
-const (
-	neighborsToBirth   = 3
-	neighborsToSurvive = 2
-)
+const maxNeighbors = 8
+
+type Rule struct {
+	raw     string
+	birth   [maxNeighbors + 1]bool
+	survive [maxNeighbors + 1]bool
+}
+
+func (r Rule) String() string {
+	return r.raw
+}
+
+func (r Rule) NextState(alive bool, neighbors int) bool {
+	if alive {
+		return r.survive[neighbors]
+	}
+	return r.birth[neighbors]
+}
+
+var ruleRegex = regexp.MustCompile(`^B([0-8]*)/S([0-8]*)$`)
+
+func ParseRule(s string) (Rule, error) {
+	matches := ruleRegex.FindStringSubmatch(strings.ToUpper(strings.TrimSpace(s)))
+	if len(matches) != 3 {
+		return Rule{}, errors.New("invalid rule format, expected B.../S... (e.g. B3/S23)")
+	}
+
+	var rule Rule
+	rule.raw = matches[0]
+
+	for _, ch := range matches[1] {
+		n, _ := strconv.Atoi(string(ch))
+		rule.birth[n] = true
+	}
+	for _, ch := range matches[2] {
+		n, _ := strconv.Atoi(string(ch))
+		rule.survive[n] = true
+	}
+
+	return rule, nil
+}
 
 var neighborOffsets = [8][2]int{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}}
 
@@ -18,13 +59,13 @@ type World struct {
 	next   []bool
 	Width  int
 	Height int
+	Rule   Rule
 }
 
-func NewWorld(width int, height int, chance int) *World {
+func NewWorld(width int, height int, chance float64, rule Rule) *World {
 	cells := make([]bool, width*height)
 	for i := range cells {
-		isAlive := rand.Intn(chance) == 0
-		cells[i] = isAlive
+		cells[i] = rand.Float64() < chance
 	}
 	next := make([]bool, width*height)
 	return &World{
@@ -32,6 +73,7 @@ func NewWorld(width int, height int, chance int) *World {
 		next:   next,
 		Width:  width,
 		Height: height,
+		Rule:   rule,
 	}
 }
 
@@ -58,14 +100,7 @@ func (w *World) Update() {
 				for x := range w.Width {
 					i := x + y*w.Width
 					n := w.aliveNeighbours(x, y)
-					switch n {
-					case neighborsToBirth:
-						w.next[i] = true
-					case neighborsToSurvive:
-						w.next[i] = w.Cells[i]
-					default:
-						w.next[i] = false
-					}
+					w.next[i] = w.Rule.NextState(w.Cells[i], n)
 				}
 			}
 		}(startY, endY)

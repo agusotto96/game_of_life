@@ -13,6 +13,7 @@ func main() {
 		config.Width,
 		config.Height,
 		config.Chance,
+		config.Rule,
 	)
 	game := NewGame(
 		world,
