@@ -1,0 +1,28 @@
+Makefile
+  s_4ed9de516cc56d::t_846d9f52ffffe4 3-4,7-10
+  s_4ed9de516cc56d::t_679c183abfa411 5
+  s_4ed9de516cc56d::t_796d41cbc60e32 6
+  s_4ed9de516cc56d::t_90ce5d34e47d7c 1-2
+cmd/serve/main.go
+  s_4ed9de516cc56d::t_232a93bace8736 1-10
+.github/workflows/pages.yml
+  s_4ed9de516cc56d::t_8dddc818436796 31
+  s_4ed9de516cc56d::t_ddf9ee2f93f6a6 1,14,18,24,26,30,33,37
+  s_4ed9de516cc56d::t_f6181047072a0b 32
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "cc89b6799e455408f87b2024caf8d08949992bdd",
+  "prompts": {},
+  "sessions": {
+    "s_4ed9de516cc56d": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "5a61204f-dcce-46db-9963-e7c21d77276f",
+        "model": "gemini-3.8-flash"
+      },
+      "human_author": "Agustin Ottolini <aottolini96@gmail.com>"
+    }
+  }
+}
