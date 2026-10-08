@@ -41,9 +41,9 @@
         const urlParams = new URLSearchParams(window.location.search);
 
         // Adaptive cell size based on screen size:
-        // Desktop (>= 1200px): cellSize = 2 for high density and fine detail (~960px width)
-        // Tablets (768px - 1199px): cellSize = 3 balanced
-        // Mobile (< 768px): cellSize = 4 for smooth 60 FPS and comfortable physical visibility
+        // Desktop (>= 1200px): cellSize = 2
+        // Tablets (768px - 1199px): cellSize = 3
+        // Mobile (< 768px): cellSize = 4
         let defaultCellSize = 2;
         if (window.innerWidth < 768) {
             defaultCellSize = 4;
@@ -51,25 +51,16 @@
             defaultCellSize = 3;
         }
 
-        const customCellSize = parseInt(urlParams.get("cell_size") || urlParams.get("cellSize"), 10);
+        const customCellSize = parseInt(urlParams.get("cell-size"), 10);
         const cellSize = (!isNaN(customCellSize) && customCellSize > 0) ? customCellSize : defaultCellSize;
-        urlParams.delete("cell_size");
-        urlParams.delete("cellSize");
+        urlParams.set("cell-size", cellSize.toString());
 
-        // Calculate dynamic dimensions from viewport if not explicitly specified
-        const parsedWidth = parseInt(urlParams.get("width"), 10);
-        const hasExplicitWidth = !isNaN(parsedWidth) && parsedWidth > 0;
-
-        const parsedHeight = parseInt(urlParams.get("height"), 10);
-        const hasExplicitHeight = !isNaN(parsedHeight) && parsedHeight > 0;
-
-        if (!hasExplicitWidth) {
-            const autoWidth = Math.max(1, Math.floor(window.innerWidth / cellSize));
-            urlParams.set("width", autoWidth.toString());
+        // Default window dimensions to viewport if not explicitly specified in URL
+        if (!urlParams.has("width") || parseInt(urlParams.get("width"), 10) <= 0) {
+            urlParams.set("width", Math.max(1, Math.floor(window.innerWidth)).toString());
         }
-        if (!hasExplicitHeight) {
-            const autoHeight = Math.max(1, Math.floor(window.innerHeight / cellSize));
-            urlParams.set("height", autoHeight.toString());
+        if (!urlParams.has("height") || parseInt(urlParams.get("height"), 10) <= 0) {
+            urlParams.set("height", Math.max(1, Math.floor(window.innerHeight)).toString());
         }
 
         const args = ["game"];

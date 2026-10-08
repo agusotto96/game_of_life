@@ -8,6 +8,7 @@ import (
 const (
 	defaultWidth    = 960
 	defaultHeight   = 600
+	defaultCellSize = 2
 	defaultChance   = 0.15
 	defaultTPS      = 60
 	defaultRule     = "B3/S23"
@@ -16,8 +17,9 @@ const (
 )
 
 func main() {
-	width := flag.Int("width", defaultWidth, "The width of the Game of Life grid (in cells).")
-	height := flag.Int("height", defaultHeight, "The height of the Game of Life grid (in cells).")
+	width := flag.Int("width", defaultWidth, "The window width in pixels.")
+	height := flag.Int("height", defaultHeight, "The window height in pixels.")
+	cellSize := flag.Int("cell-size", defaultCellSize, "The display size of each cell in pixels.")
 	chance := flag.Float64("chance", defaultChance, "The probability (0.0 to 1.0) that a cell starts alive.")
 	tps := flag.Int("tps", defaultTPS, "The number of simulation updates per second (Ticks Per Second).")
 	rule := flag.String("rule", defaultRule, "Life-like cellular automaton rule in B.../S... format (e.g. B3/S23, B36/S23, B35678/S5678).")
@@ -34,12 +36,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	world, err := NewWorld(*width, *height, *chance, *rule)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	game, err := NewGame(world, *tps, alive, dead)
+	game, err := NewGame(*width, *height, *cellSize, *tps, *chance, *rule, alive, dead)
 	if err != nil {
 		log.Fatal(err)
 	}
