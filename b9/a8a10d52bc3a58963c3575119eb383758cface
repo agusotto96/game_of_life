@@ -1,0 +1,31 @@
+main.go
+  s_4ed9de516cc56d::t_1c42add4e2a1fd 11,20-21
+  s_4ed9de516cc56d::t_e3d56c961c0d90 22
+  s_4ed9de516cc56d::t_092c4504e27dc6 39
+game.go
+  s_4ed9de516cc56d::t_312d19950dbf85 7,13-14,32-39,41,44,46-47
+  s_4ed9de516cc56d::t_53c7528469d96c 20-26,76,79-82,106,112
+  s_4ed9de516cc56d::t_5cb28eb5fde3e4 50-52,54-55,58,69-71,77-78
+  s_4ed9de516cc56d::t_0aa4126b7cc25f 60-61,67-68
+  s_4ed9de516cc56d::t_4297d7e5a429fa 53,56-57,59,72
+  s_4ed9de516cc56d::t_06d604d8ae4115 73
+web/index.html
+  s_4ed9de516cc56d::t_0636bbc253177e 44-46,54
+  s_4ed9de516cc56d::t_a6ba65a84c7639 56,58-60,62-63
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b9a8a10d52bc3a58963c3575119eb383758cface",
+  "prompts": {},
+  "sessions": {
+    "s_4ed9de516cc56d": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "5a61204f-dcce-46db-9963-e7c21d77276f",
+        "model": "gemini-3.8-flash"
+      },
+      "human_author": "Agustin Ottolini <aottolini96@gmail.com>"
+    }
+  }
+}
